@@ -8,7 +8,7 @@ public class GameBoard {
   int numberOfMines;
   int boardDimension;
   Mine[] mines;
-  char[][] field;
+  int[][] field;
 
 
   public void determineBoardDimension() {
@@ -38,15 +38,16 @@ public class GameBoard {
   public void initField() {
     // TODO: ask the user how big the field should be
     // this.determineBoardDimension();
-    this.boardDimension = 9;
-    this.determineNumberOfMines();
-    this.mines = new Mine[numberOfMines];
-    this.field = new char[boardDimension][boardDimension];
+    boardDimension = 9;
+    determineNumberOfMines();
+    mines = new Mine[numberOfMines];
+    field = new int[boardDimension][boardDimension];
+
 
     Random random = new Random();
     for (int i = 0; i < numberOfMines; i++) {
-      Integer nextX = random.nextInt(boardDimension);
-      Integer nextY = random.nextInt(boardDimension);
+      Integer nextX = random.nextInt(boardDimension - 1);
+      Integer nextY = random.nextInt(boardDimension - 1);
       if (!isMine(nextX, nextY)) {
         mines[i] = new Mine(nextX, nextY);
       } else {
@@ -54,97 +55,26 @@ public class GameBoard {
       }
     }
 
-    for (int i = 0; i < boardDimension; i++) {
-      for (int j = 0; j < boardDimension; j++) {
-        int count = determineSurroundingMines(i, j);
-        char next;
-        if (count == 0) {
-          next = '.';
-        } else if (count == 9) {
-          next = 'X';
-        } else {
-          next = Character.forDigit(count,10);
-        }
-        this.field[i][j] = next;
+    addMinesAndHints();
+  }
+
+  private void addMinesAndHints() {
+    for (Mine mine : mines) {
+      field[mine.getX()][mine.getY()] = boardDimension;
+      addHints(mine.getX(), mine.getY());
+    }
+  }
+
+  private void addHints(int x, int y) {
+    for (int i = x - 1; i <= x + 1; i++) {
+      if (i < 0 || i > boardDimension) continue;
+      for (int j = y - 1; j <= y + 1; j++) {
+        if (j < 0 || j > boardDimension || isMine(i, j)) continue;
+        field[i][j] += 1;
       }
     }
   }
 
-
-  // Attempt #1 - Gross.
-  private int determineSurroundingMines(int x, int y) {
-    if (isMine(x, y)){
-      return 9;
-    }
-    int count = 0;
-    if (x == 0) {
-      if (y == 0) {
-//                no x-1, y-1
-        count += isMine(x, y+1) ? 1 : 0;
-        count += isMine(x+1, y) ? 1 : 0;
-        count += isMine(x+1, y+1) ? 1 : 0;
-      } else if (y == this.boardDimension) {
-//                no x-1, y+1
-        count += isMine(x, y-1) ? 1 : 0;
-        count += isMine(x+1, y-1) ? 1 : 0;
-        count += isMine(x+1, y) ? 1 : 0;
-      } else {
-//                no x-1
-        count += isMine(x, y-1) ? 1 : 0;
-        count += isMine(x, y+1) ? 1 : 0;
-        count += isMine(x+1, y-1) ? 1 : 0;
-        count += isMine(x+1, y) ? 1 : 0;
-        count += isMine(x+1, y+1) ? 1 : 0;
-      }
-    } else if (x == this.boardDimension) {
-      if (y == 0) {
-//                no x+1, y-1
-        count += isMine(x, y+1) ? 1 : 0;
-        count += isMine(x-1, y) ? 1 : 0;
-        count += isMine(x-1, y+1) ? 1 : 0;
-      } else if (y == this.boardDimension) {
-//                no x+1, y+1
-        count += isMine(x, y-1) ? 1 : 0;
-        count += isMine(x-1, y-1) ? 1 : 0;
-        count += isMine(x-1, y) ? 1 : 0;
-      } else {
-//                no x+1
-        count += isMine(x, y-1) ? 1 : 0;
-        count += isMine(x, y+1) ? 1 : 0;
-        count += isMine(x-1, y-1) ? 1 : 0;
-        count += isMine(x-1, y) ? 1 : 0;
-        count += isMine(x-1, y+1) ? 1 : 0;
-      }
-    } else {
-      if (y == 0) {
-//                no y-1
-        count += isMine(x, y+1) ? 1 : 0;
-        count += isMine(x-1, y) ? 1 : 0;
-        count += isMine(x-1, y+1) ? 1 : 0;
-        count += isMine(x+1, y) ? 1 : 0;
-        count += isMine(x+1, y+1) ? 1 : 0;
-
-      } else if (y == this.boardDimension) {
-//                no y+1
-        count += isMine(x, y-1) ? 1 : 0;
-        count += isMine(x-1, y-1) ? 1 : 0;
-        count += isMine(x-1, y) ? 1 : 0;
-        count += isMine(x+1, y-1) ? 1 : 0;
-        count += isMine(x+1, y) ? 1 : 0;
-      } else {
-//                all surrounding squares
-        count += isMine(x, y-1) ? 1 : 0;
-        count += isMine(x, y+1) ? 1 : 0;
-        count += isMine(x-1, y-1) ? 1 : 0;
-        count += isMine(x-1, y) ? 1 : 0;
-        count += isMine(x-1, y+1) ? 1 : 0;
-        count += isMine(x+1, y-1) ? 1 : 0;
-        count += isMine(x+1, y) ? 1 : 0;
-        count += isMine(x+1, y+1) ? 1 : 0;
-      }
-    }
-    return count;
-  }
 
   private Boolean isMine(int x, int y) {
     return Arrays.asList(mines).contains(new Mine(x, y));
@@ -153,7 +83,13 @@ public class GameBoard {
   public void printField() {
     for (int i = 0; i < boardDimension; i++) {
       for (int j = 0; j < boardDimension; j++) {
-        System.out.print(field[i][j]);
+        if (field[i][j] == 0){
+          System.out.print('.');
+        } else if (field[i][j] == boardDimension) {
+          System.out.print('X');
+        } else {
+          System.out.print(field[i][j]);
+        }
       }
       System.out.println();
     }
