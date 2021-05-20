@@ -8,5 +8,6 @@ public class Main {
 
         game.initField();
         game.printField();
+        game.playGame();
     }
 }
