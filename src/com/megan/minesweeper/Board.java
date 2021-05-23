@@ -3,34 +3,30 @@ package com.megan.minesweeper;
 import java.util.Random;
 import java.util.Scanner;
 
-public class GameBoard {
-  int numberOfMines;
-  int boardDimension;
-  Cell[][] field;
+public class Board {
+  private int numberOfMines;
+  private int boardDimension;
+  private Cell[][] field;
 
-  private void determineBoardDimension() {
-    Scanner sc = new Scanner(System.in);
-    System.out.println("How big should the field be?");
-    String input = sc.nextLine();
-    if (input.matches("\\d+")) {
-      this.boardDimension = Integer.parseInt(input);
-    } else {
-      System.out.println("You must provide a valid integer.");
-    }
-//        sc.close();
+  Board() {
+    this.setBoardDimension(9);
+    this.initField();
   }
 
-  private void determineNumberOfMines() {
-    Scanner sc = new Scanner(System.in);
-    System.out.println("How many mines do you want on the field?");
-    String input = sc.nextLine();
-    if (input.matches("\\d+") && Integer.parseInt(input) < boardDimension * boardDimension) {
-      this.numberOfMines = Integer.parseInt(input);
-    } else {
-      System.out.println("You must provide a valid integer.");
-    }
-//        Closing this disallows input later in the program, why?
-//        sc.close();
+  public int getNumberOfMines() {
+    return numberOfMines;
+  }
+
+  public void setNumberOfMines(int numberOfMines) {
+    this.numberOfMines = numberOfMines;
+  }
+
+  public int getBoardDimension() {
+    return boardDimension;
+  }
+
+  public void setBoardDimension(int boardDimension) {
+    this.boardDimension = boardDimension;
   }
 
   private int[] determineUserMove() {
@@ -51,17 +47,15 @@ public class GameBoard {
   }
 
   public void initField() {
-    // TODO: ask the user how big the field should be
-    // this.determineBoardDimension();
-    boardDimension = 9;
-    determineNumberOfMines();
     field = new Cell[boardDimension][boardDimension];
     for (int i = 0; i < boardDimension; i++) {
       for (int j = 0; j < boardDimension; j++) {
         field[i][j] = new Cell();
       }
     }
+  }
 
+  public void setMines() {
     Random random = new Random();
     for (int i = 0; i < numberOfMines; i++) {
       Integer nextX = random.nextInt(boardDimension - 1);
@@ -108,6 +102,7 @@ public class GameBoard {
     return allMinesMarked;
   }
 
+//  TODO: add wrapper to Controller
   public void printField() {
     System.out.println(" |123456789|");
     System.out.println("-|—————————|");
@@ -128,6 +123,7 @@ public class GameBoard {
     System.out.println("-|—————————|");
   }
 
+//  TODO: move into Controller?
   public void playGame() {
     Boolean isGameWon = false;
     do {

@@ -4,10 +4,14 @@ public class Main {
 
     public static void main(String[] args) {
         // write your code here
-        GameBoard game = new GameBoard();
+        Controller minesweeper = new Controller();
 
-        game.initField();
-        game.printField();
-        game.playGame();
+        minesweeper.determineNumberOfMines();
+        minesweeper.game.setMines();
+
+        minesweeper.game.printField();
+        minesweeper.game.playGame();
+
+
     }
 }
