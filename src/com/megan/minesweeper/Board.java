@@ -60,8 +60,7 @@ public class Board {
     for (int i = 0; i < numberOfMines; i++) {
       Integer nextX = random.nextInt(boardDimension - 1);
       Integer nextY = random.nextInt(boardDimension - 1);
-      if (!isMine(nextX, nextY)) {
-        field[nextX][nextY].setMine(true);
+        field[nextX][nextY] = new Mine();
         addHints(nextX, nextY);
       } else {
         i--;
@@ -76,23 +75,30 @@ public class Board {
         if (j < 0 || j > boardDimension || isMine(i, j)) {
           continue;
         } else {
-          field[i][j].addOne();
+          if (!(field[i][j] instanceof Dracula)) {
+            field[i][j] = new Dracula();
+          }
+          ((Dracula) field[i][j]).addOne();
         }
       }
     }
   }
 
   private Boolean isMine(int x, int y) {
-    return field[x][y].isMine();
+    return field[x][y] instanceof Mine;
+  }
+
+  private Boolean isMine(Cell cell) {
+    return cell instanceof Mine;
   }
 
   private Boolean areAllMinesMarked() {
     Boolean allMinesMarked = true;
     for (Cell[] row : field ) {
       for (Cell cell : row) {
-        if (cell.isMine() && !cell.isFlag()) {
+        if (isMine(cell) && !cell.isFlag()) {
           allMinesMarked = false;
-        } else if (cell.isFlag() && !cell.isMine()) {
+        } else if (cell.isFlag() && !(isMine(cell))) {
           allMinesMarked = false;
         } else {
           continue;
@@ -109,13 +115,8 @@ public class Board {
     for (int i = 0; i < boardDimension; i++) {
       System.out.print((i + 1) + "|");
       for (int j = 0; j < boardDimension; j++) {
-        if (field[i][j].isFlag()){
-          System.out.print('*');
-        } else if (  field[i][j].count > 0) {
-          System.out.print(field[i][j].count);
-        } else {
-          System.out.print('.');
-        }
+        System.out.print(field[i][j].getCellChar());
+
       }
       System.out.print("|");
       System.out.println();
