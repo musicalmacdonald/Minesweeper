@@ -55,11 +55,12 @@ public class Board {
     }
   }
 
-  public void setMines() {
+  public void setMines(int x, int y) {
     Random random = new Random();
     for (int i = 0; i < numberOfMines; i++) {
       Integer nextX = random.nextInt(boardDimension - 1);
       Integer nextY = random.nextInt(boardDimension - 1);
+      if (!isMine(nextX, nextY) && !(nextX == x && nextY == y)) {
         field[nextX][nextY] = new Mine();
         addHints(nextX, nextY);
       } else {

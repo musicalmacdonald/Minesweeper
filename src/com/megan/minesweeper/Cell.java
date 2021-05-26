@@ -3,6 +3,7 @@ package com.megan.minesweeper;
 public class Cell {
   Boolean displayed;
   Boolean flag;
+//  TODO: remove this
   int count;
 
   Cell(){

@@ -32,21 +32,30 @@ public class Controller {
       System.out.println("You must provide a valid integer.");
     }
   }
+  
+  public UserMove determineUserMove() {
+    String[] userInput = new String[3];
 
-  public int[] determineUserMove() {
-    int[] userInput = new int[2];
-    System.out.println("Set/delete mines marks (x and y coordinates):");
+    System.out.println("Set/unset mines marks or claim a cell as free:");
     String input = sc.nextLine();
-    if (input.matches("\\d+ \\d+")) {
-      String s[]= input.split(" ");
-      for (int i =0; i < s.length; i++) {
-        userInput[i]= Integer.parseInt(s[i]) - 1;
-      }
+    if (input.matches("\\d+ \\d+ [a-z]+")) {
+      userInput = input.split(" ");
     } else {
-      System.out.println("You must provide 2 valid integers separated by a space.");
+      System.out.println("Please provide 2 valid integers separated by a space and either the word 'mine' or 'free'.");
       determineUserMove();
     }
-    return userInput;
+    return new UserMove(userInput);
+  }
+
+  public void beginGame() {
+    determineNumberOfMines();
+    game.printField();
+    UserMove firstMove = determineUserMove();
+    game.setMines(firstMove.getX(), firstMove.getY());
+  }
+
+  public void playGame() {
+
   }
 
 

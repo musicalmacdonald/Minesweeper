@@ -6,8 +6,7 @@ public class Main {
         // write your code here
         Controller minesweeper = new Controller();
 
-        minesweeper.determineNumberOfMines();
-        minesweeper.game.setMines();
+        minesweeper.beginGame();
 
         minesweeper.game.printField();
         minesweeper.game.playGame();
