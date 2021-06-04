@@ -8,7 +8,7 @@ public class Controller {
 
   Controller() {
     this.sc = new Scanner(System.in);
-    this.game = new Board();
+    this.game = new Board(true);
   }
 
 //  TODO: add feature to set board size too
@@ -51,7 +51,8 @@ public class Controller {
   public void beginGame() {
     determineNumberOfMines();
     UserMove firstMove = determineUserMove();
-    game.setMines(firstMove.getY(), firstMove.getX());
+    this.game.setMines(firstMove.getY(), firstMove.getX());
+    this.game.setVisibleCells(firstMove.getX(), firstMove.getY());
   }
 
   public void playARound() {
@@ -62,7 +63,6 @@ public class Controller {
     } else {
       targetCell.setFlag();
     }
-//    this.game.printField();
   }
 
   public void playGame() {

@@ -7,10 +7,12 @@ public class Board {
   private int numberOfMines;
   private int boardDimension;
   private Cell[][] field;
+  boolean debugMode = false;
 
-  Board() {
+  Board(boolean debugMode) {
     this.setBoardDimension(9);
     this.initField();
+    this.debugMode = debugMode;
   }
 
   public int getNumberOfMines() {
@@ -136,7 +138,13 @@ public class Board {
     for (int i = 0; i < boardDimension; i++) {
       System.out.print((i + 1) + "|");
       for (int j = 0; j < boardDimension; j++) {
+        if(debugMode && isMine(i, j)) {
+          System.out.print("\u001b[31m");
+        }
         System.out.print(field[i][j].getCellChar());
+        if (debugMode && isMine(i, j)) {
+          System.out.print("\u001b[0m");
+        }
       }
       System.out.print("|");
       System.out.println();

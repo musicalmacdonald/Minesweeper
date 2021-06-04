@@ -1,8 +1,8 @@
 package com.megan.minesweeper;
 
 public class Cell {
-  Boolean displayed;
-  Boolean flag;
+  boolean displayed;
+  boolean flag;
 
   Cell(){
     this.displayed = false;
