@@ -5,11 +5,7 @@ public class Main {
     public static void main(String[] args) {
         // write your code here
         Controller minesweeper = new Controller();
-
-        minesweeper.beginGame();
-
-        minesweeper.game.printField();
-        minesweeper.game.playGame();
+        minesweeper.playGame();
 
 
     }

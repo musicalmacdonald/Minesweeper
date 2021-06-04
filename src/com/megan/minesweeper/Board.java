@@ -76,31 +76,60 @@ public class Board {
     }
   }
 
-  private Boolean isMine(int x, int y) {
+  public Boolean isMine(int x, int y) {
     return field[x][y] instanceof Mine;
   }
 
-  private Boolean isMine(Cell cell) {
-    return cell instanceof Mine;
-  }
-
-  private Boolean areAllMinesMarked() {
-    Boolean allMinesMarked = true;
+  public Boolean areAllMinesMarked() {
+    boolean allMinesMarked = true;
     for (Cell[] row : field ) {
       for (Cell cell : row) {
-        if (isMine(cell) && !cell.isFlag()) {
-          allMinesMarked = false;
-        } else if (cell.isFlag() && !(isMine(cell))) {
-          allMinesMarked = false;
-        } else {
+        if (cell.isCellSolved()) {
           continue;
+        } else {
+          allMinesMarked = false;
         }
       }
     }
     return allMinesMarked;
   }
 
-//  TODO: add wrapper to Controller
+  public void setVisibleCells(int x, int y) {
+    if (isMine(x, y)) {
+      showAllMines();
+      System.out.println("You stepped on a mine and failed!");
+    } else {
+      crawlNonMineCells(x, y);
+    }
+  }
+
+  private void crawlNonMineCells(int x, int y) {
+    for (int i = x - 1; i <= x + 1; i++) {
+      if (i < 0 || i > boardDimension) continue;
+      for (int j = y - 1; j <= y + 1; j++) {
+        if (j < 0 || j > boardDimension || isMine(i, j) || field[i][j].isDisplayed()) {
+          continue;
+        } else {
+          field[i][j].setDisplayed(true);
+          if (!(field[i][j] instanceof Dracula)) {
+            crawlNonMineCells(i, j);
+          }
+        }
+      }
+    }
+  }
+
+  private void showAllMines() {
+    for (Cell[] row : field ) {
+      for (Cell cell : row) {
+        if (cell instanceof Mine) {
+          cell.setDisplayed(true);
+        }
+      }
+    }
+  }
+
+//  TODO: add wrapper to Controller?
   public void printField() {
     System.out.println(" |123456789|");
     System.out.println("-|—————————|");
@@ -108,34 +137,10 @@ public class Board {
       System.out.print((i + 1) + "|");
       for (int j = 0; j < boardDimension; j++) {
         System.out.print(field[i][j].getCellChar());
-
       }
       System.out.print("|");
       System.out.println();
     }
     System.out.println("-|—————————|");
-  }
-
-//  TODO: move into Controller?
-  public void playGame() {
-    Boolean isGameWon = false;
-    do {
-      int[] userMove = determineUserMove();
-      int x = userMove[0];
-      int y = userMove[1];
-      if (field[y][x].isNumber()) {
-        System.out.println("There is a number here!");
-      } else if (field[y][x].isFlag()) {
-        field[y][x].setFlag(false);
-        printField();
-      } else {
-        field[y][x].setFlag(true);
-        printField();
-      }
-
-      isGameWon = areAllMinesMarked();
-
-    } while (!isGameWon);
-    System.out.println("Congratulations! You found all the mines!");
   }
 }

@@ -6,15 +6,17 @@ public class UserMove {
   private Boolean free;
 
   UserMove(int x, int y, Boolean free) {
-    this.x = x;
-    this.y = y;
-    this.free = free;
+    // subtract 1 to account for 0 based array index
+    this.setX(x - 1);
+    this.setY(y - 1);
+    this.setFree(free);
   }
 
   UserMove(String[] input) {
-    this.x = Integer.parseInt(input[0]);
-    this.y = Integer.parseInt(input[1]);
-    this.free = input[2].matches("free");
+    // subtract 1 to account for 0 based array index
+    this.setX(Integer.parseInt(input[0]) - 1);
+    this.setY(Integer.parseInt(input[1]) - 1);
+    this.setFree(input[2].matches("free"));
   }
 
   public int getX() {

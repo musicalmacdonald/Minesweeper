@@ -32,10 +32,11 @@ public class Controller {
       System.out.println("You must provide a valid integer.");
     }
   }
-  
+
   public UserMove determineUserMove() {
     String[] userInput = new String[3];
 
+    this.game.printField();
     System.out.println("Set/unset mines marks or claim a cell as free:");
     String input = sc.nextLine();
     if (input.matches("\\d+ \\d+ [a-z]+")) {
@@ -49,13 +50,29 @@ public class Controller {
 
   public void beginGame() {
     determineNumberOfMines();
-    game.printField();
     UserMove firstMove = determineUserMove();
-    game.setMines(firstMove.getX(), firstMove.getY());
+    game.setMines(firstMove.getY(), firstMove.getX());
+  }
+
+  public void playARound() {
+    UserMove nextMove = determineUserMove();
+    Cell targetCell = this.game.getFieldCell(nextMove.getY(), nextMove.getX());
+    if (nextMove.isFree()) {
+      this.game.setVisibleCells(nextMove.getY(), nextMove.getX());
+    } else {
+      targetCell.setFlag();
+    }
+//    this.game.printField();
   }
 
   public void playGame() {
-
+    beginGame();
+    boolean isGameWon = false;
+    do {
+      playARound();
+      isGameWon = this.game.areAllMinesMarked();
+    } while (!isGameWon);
+    System.out.println("Congratulations! You found all the mines!");
   }
 
 
