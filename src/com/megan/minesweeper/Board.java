@@ -107,9 +107,9 @@ public class Board {
 
   private void crawlNonMineCells(int x, int y) {
     for (int i = x - 1; i <= x + 1; i++) {
-      if (i < 0 || i > boardDimension) continue;
+      if (i < 0 || i > (boardDimension - 1)) continue;
       for (int j = y - 1; j <= y + 1; j++) {
-        if (j < 0 || j > boardDimension || isMine(i, j) || field[i][j].isDisplayed()) {
+        if (j < 0 || j > (boardDimension - 1) || isMine(i, j) || field[i][j].isDisplayed()) {
           continue;
         } else {
           field[i][j].setDisplayed(true);
