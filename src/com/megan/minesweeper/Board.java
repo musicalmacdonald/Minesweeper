@@ -29,28 +29,19 @@ public class Board {
     this.boardDimension = boardDimension;
   }
 
-  private int[] determineUserMove() {
-    int[] userInput = new int[2];
-    Scanner sc = new Scanner(System.in);
-    System.out.println("Set/delete mines marks (x and y coordinates):");
-    String input = sc.nextLine();
-    if (input.matches("\\d+ \\d+")) {
-      String s[]= input.split(" ");
-      for (int i =0; i < s.length; i++) {
-        userInput[i]= Integer.parseInt(s[i]) - 1;
-      }
-    } else {
-      System.out.println("You must provide 2 valid integers separated by a space.");
-      determineUserMove();
-    }
-    return userInput;
+  public Cell getFieldCell(int x, int y) {
+    return field[x][y];
+  }
+
+  public void setFieldCell(int x, int y, Cell cell) {
+    this.field[x][y] = cell;
   }
 
   public void initField() {
     field = new Cell[boardDimension][boardDimension];
     for (int i = 0; i < boardDimension; i++) {
       for (int j = 0; j < boardDimension; j++) {
-        field[i][j] = new Cell();
+        setFieldCell(i,j, new Cell());
       }
     }
   }
@@ -61,7 +52,7 @@ public class Board {
       Integer nextX = random.nextInt(boardDimension - 1);
       Integer nextY = random.nextInt(boardDimension - 1);
       if (!isMine(nextX, nextY) && !(nextX == x && nextY == y)) {
-        field[nextX][nextY] = new Mine();
+        setFieldCell(nextX,nextY, new Mine());
         addHints(nextX, nextY);
       } else {
         i--;
@@ -77,7 +68,7 @@ public class Board {
           continue;
         } else {
           if (!(field[i][j] instanceof Dracula)) {
-            field[i][j] = new Dracula();
+            setFieldCell(i, j, new Dracula());
           }
           ((Dracula) field[i][j]).addOne();
         }
