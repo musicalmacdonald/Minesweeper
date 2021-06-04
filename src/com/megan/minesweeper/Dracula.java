@@ -24,12 +24,13 @@ public class Dracula extends Cell {
 
   @Override
   String getCellChar() {
-    if (this.isFlag()) {
-      return "*";
-    } else if (this.displayed) {
-      return "" + count;
-    } else {
-      return ".";
+    String cellStr = ".";
+    if (this.displayed) {
+      cellStr = "" + count;
     }
+    if (this.isFlag()) {
+      cellStr = "*";
+    }
+    return cellStr;
   }
 }

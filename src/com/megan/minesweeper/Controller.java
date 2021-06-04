@@ -62,7 +62,7 @@ public class Controller {
     if (nextMove.isFree()) {
       notExploded = this.game.setVisibleCells(nextMove.getY(), nextMove.getX());
     } else {
-      targetCell.setFlag();
+      targetCell.setFlag(true);
     }
     return notExploded;
   }

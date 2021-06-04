@@ -9,7 +9,7 @@ public class Cell {
     this.flag = false;
   }
 
-  public Boolean isDisplayed() {
+  public boolean isDisplayed() {
     return displayed;
   }
 
@@ -17,22 +17,23 @@ public class Cell {
     this.displayed = displayed;
   }
 
-  public Boolean isFlag() {
+  public boolean isFlag() {
     return flag;
   }
 
-  public void setFlag() {
-    this.flag = !this.flag;
+  public void setFlag(boolean flag) {
+    this.flag = flag;
   }
 
   String getCellChar() {
-    if (this.isFlag()) {
-      return "*";
-    } else if (this.displayed) {
-      return "/";
-    } else {
-      return ".";
+    String cellStr = ".";
+    if (this.displayed) {
+      cellStr = "/";
     }
+    if (this.isFlag()) {
+      cellStr = "*";
+    }
+    return cellStr;
   }
 
   boolean isCellSolved() {

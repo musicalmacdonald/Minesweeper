@@ -8,13 +8,15 @@ public class Mine extends Cell {
 
   @Override
   String getCellChar() {
+    String cellStr = ".";
     if (this.isFlag()) {
-      return "*";
-    } else if (this.displayed) {
-      return "X";
-    } else {
-      return ".";
+      cellStr = "*";
     }
+    // Needs to come 2nd for loosing scenario
+    if (this.displayed) {
+      cellStr = "X";
+    }
+    return cellStr;
   }
 
   @Override
