@@ -55,24 +55,35 @@ public class Controller {
     this.game.setVisibleCells(firstMove.getX(), firstMove.getY());
   }
 
-  public void playARound() {
+  public boolean playARound() {
+    boolean notExploded = true;
     UserMove nextMove = determineUserMove();
     Cell targetCell = this.game.getFieldCell(nextMove.getY(), nextMove.getX());
     if (nextMove.isFree()) {
-      this.game.setVisibleCells(nextMove.getY(), nextMove.getX());
+      notExploded = this.game.setVisibleCells(nextMove.getY(), nextMove.getX());
     } else {
       targetCell.setFlag();
     }
+    return notExploded;
   }
 
   public void playGame() {
     beginGame();
     boolean isGameWon = false;
+    boolean notExploded = false;
     do {
-      playARound();
+      notExploded = playARound();
       isGameWon = this.game.areAllMinesMarked();
-    } while (!isGameWon);
-    System.out.println("Congratulations! You found all the mines!");
+    } while (!isGameWon && notExploded);
+
+    if (!notExploded) {
+      System.out.println("You stepped on a mine and failed!");
+    } else if (isGameWon) {
+      System.out.println("Congratulations! You found all the mines!");
+    } else {
+      System.out.println("An error occurred.  Please play again later.");
+    }
+
   }
 
 

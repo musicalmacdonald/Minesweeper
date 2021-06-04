@@ -96,12 +96,14 @@ public class Board {
     return allMinesMarked;
   }
 
-  public void setVisibleCells(int x, int y) {
+
+  public boolean setVisibleCells(int x, int y) {
     if (isMine(x, y)) {
       showAllMines();
-      System.out.println("You stepped on a mine and failed!");
+      return false;
     } else {
       crawlNonMineCells(x, y);
+      return true;
     }
   }
 
