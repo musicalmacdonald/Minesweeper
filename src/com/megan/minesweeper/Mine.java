@@ -17,4 +17,8 @@ public class Mine extends Cell {
     }
   }
 
+  @Override
+  boolean isCellSolved() {
+    return this.isFlag() && !this.isDisplayed();
+  }
 }

@@ -3,13 +3,10 @@ package com.megan.minesweeper;
 public class Cell {
   Boolean displayed;
   Boolean flag;
-//  TODO: remove this
-  int count;
 
   Cell(){
-    this.displayed = true;
+    this.displayed = false;
     this.flag = false;
-    this.count = 0;
   }
 
   public Boolean isDisplayed() {
@@ -24,13 +21,8 @@ public class Cell {
     return flag;
   }
 
-  public void setFlag(Boolean flag) {
-    this.flag = flag;
-  }
-
-//  TODO: move this to Board & check class
-   public Boolean isNumber() {
-    return this.count > 0;
+  public void setFlag() {
+    this.flag = !this.flag;
   }
 
   String getCellChar() {
@@ -41,5 +33,9 @@ public class Cell {
     } else {
       return ".";
     }
+  }
+
+  boolean isCellSolved() {
+    return !this.isFlag();
   }
 }
