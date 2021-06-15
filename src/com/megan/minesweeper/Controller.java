@@ -53,19 +53,19 @@ public class Controller {
     determineNumberOfMines();
     UserMove firstMove = determineUserMove();
     while (!firstMove.isFree()) {
-      this.game.getFieldCell(firstMove.getY(), firstMove.getX()).toggleFlag();
+      this.game.getFieldCell(firstMove.getRow(), firstMove.getColumn()).toggleFlag();
       firstMove = determineUserMove();
     }
-    this.game.setMines(firstMove.getY(), firstMove.getX());
-    this.game.setVisibleCells(firstMove.getX(), firstMove.getY());
+    this.game.setMines(firstMove.getRow(), firstMove.getColumn());
+    this.game.setVisibleCells(firstMove.getRow(), firstMove.getColumn());
   }
 
   public boolean playARound() {
     boolean notExploded = true;
     UserMove nextMove = determineUserMove();
-    Cell targetCell = this.game.getFieldCell(nextMove.getY(), nextMove.getX());
+    Cell targetCell = this.game.getFieldCell(nextMove.getRow(), nextMove.getColumn());
     if (nextMove.isFree()) {
-      notExploded = this.game.setVisibleCells(nextMove.getY(), nextMove.getX());
+      notExploded = this.game.setVisibleCells(nextMove.getRow(), nextMove.getColumn());
     } else {
       targetCell.toggleFlag();
     }
