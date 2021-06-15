@@ -51,8 +51,8 @@ public class Board {
   public void setMines(int x, int y) {
     Random random = new Random();
     for (int i = 0; i < numberOfMines; i++) {
-      Integer nextX = random.nextInt(boardDimension - 1);
-      Integer nextY = random.nextInt(boardDimension - 1);
+      Integer nextX = random.nextInt(boardDimension);
+      Integer nextY = random.nextInt(boardDimension);
       if (!isMine(nextX, nextY) && !(nextX == x && nextY == y)) {
         boolean flagged = getFieldCell(nextX, nextY).isFlag();
         setFieldCell(nextX,nextY, new Mine(flagged));
@@ -65,9 +65,9 @@ public class Board {
 
   private void addHints(int x, int y) {
     for (int i = x - 1; i <= x + 1; i++) {
-      if (i < 0 || i > boardDimension) continue;
+      if (i < 0 || i > (boardDimension - 1)) continue;
       for (int j = y - 1; j <= y + 1; j++) {
-        if (j < 0 || j > boardDimension || isMine(i, j)) {
+        if (j < 0 || j > (boardDimension - 1) || isMine(i, j)) {
           continue;
         } else {
           if (!(field[i][j] instanceof Dracula)) {
