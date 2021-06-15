@@ -54,7 +54,8 @@ public class Board {
       Integer nextX = random.nextInt(boardDimension - 1);
       Integer nextY = random.nextInt(boardDimension - 1);
       if (!isMine(nextX, nextY) && !(nextX == x && nextY == y)) {
-        setFieldCell(nextX,nextY, new Mine());
+        boolean flagged = getFieldCell(nextX, nextY).isFlag();
+        setFieldCell(nextX,nextY, new Mine(flagged));
         addHints(nextX, nextY);
       } else {
         i--;
@@ -70,7 +71,8 @@ public class Board {
           continue;
         } else {
           if (!(field[i][j] instanceof Dracula)) {
-            setFieldCell(i, j, new Dracula());
+            boolean flagged = getFieldCell(i, j).isFlag();
+            setFieldCell(i, j, new Dracula(flagged));
           }
           ((Dracula) field[i][j]).addOne();
         }

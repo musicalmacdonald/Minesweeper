@@ -8,6 +8,11 @@ public class Dracula extends Cell {
     super();
     this.count = 0;
   }
+  Dracula(boolean flag) {
+    super();
+    this.flag = flag;
+    this.count = 0;
+  }
 
   public int getCount() {
     return count;

@@ -5,6 +5,10 @@ public class Mine extends Cell {
   Mine() {
     super();
   }
+  Mine(boolean flag){
+    super();
+    this.flag = flag;
+  }
 
   @Override
   String getCellChar() {
