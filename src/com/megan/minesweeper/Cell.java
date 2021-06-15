@@ -15,24 +15,27 @@ public class Cell {
 
   public void setDisplayed(Boolean displayed) {
     this.displayed = displayed;
+    if (this.isFlag()) {
+      this.toggleFlag();
+    }
   }
 
   public boolean isFlag() {
     return flag;
   }
 
-  public void setFlag(boolean flag) {
-    this.flag = flag;
+  public void toggleFlag() {
+    this.flag = !this.flag;
   }
 
   String getCellChar() {
     String cellStr = ".";
-    if (this.displayed) {
-      cellStr = "/";
-    }
     if (this.isFlag()) {
       cellStr = "*";
+    } else if (this.displayed) {
+      cellStr = "/";
     }
+
     return cellStr;
   }
 

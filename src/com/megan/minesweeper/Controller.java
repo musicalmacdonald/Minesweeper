@@ -43,6 +43,7 @@ public class Controller {
       userInput = input.split(" ");
     } else {
       System.out.println("Please provide 2 valid integers separated by a space and either the word 'mine' or 'free'.");
+      input = "";
       determineUserMove();
     }
     return new UserMove(userInput);
@@ -51,6 +52,10 @@ public class Controller {
   public void beginGame() {
     determineNumberOfMines();
     UserMove firstMove = determineUserMove();
+    while (!firstMove.isFree()) {
+      this.game.getFieldCell(firstMove.getY(), firstMove.getX()).toggleFlag();
+      firstMove = determineUserMove();
+    }
     this.game.setMines(firstMove.getY(), firstMove.getX());
     this.game.setVisibleCells(firstMove.getX(), firstMove.getY());
   }
@@ -62,7 +67,7 @@ public class Controller {
     if (nextMove.isFree()) {
       notExploded = this.game.setVisibleCells(nextMove.getY(), nextMove.getX());
     } else {
-      targetCell.setFlag(true);
+      targetCell.toggleFlag();
     }
     return notExploded;
   }
